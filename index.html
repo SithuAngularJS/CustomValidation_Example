@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<script 
+ src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js">
+</script>  
+<body ng-app="testApp">
+ 
+<p>Enter in the input field:</p>
+ 
+<form name="testForm">
+<input name="testInput" ng-model="testInput" required test-directive>
+</form>
+ 
+<p>The input's valid state is:</p>
+<h3>{{testForm.testInput.$valid}}</h3>
+ 
+<script>
+var app = angular.module('testApp', []);
+app.directive('testDirective', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attr, mCtrl) {
+            function testValidation(value) {
+                if (value.indexOf("j") > -1) {
+                    mCtrl.$setValidity('charE', true);
+                } else {
+                    mCtrl.$setValidity('charE', false);
+                }
+                return value;
+            }
+            mCtrl.$parsers.push(testValidation);
+        }
+    };
+});
+</script>
+ 
+</body>
+</html>
